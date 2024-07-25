@@ -2,22 +2,31 @@ import React, {useState} from "react";
 
 
 const Calculator: React.FC = () => {
-    const [distance, setDistance] = useState<number | string>(0)
-    const [speed, setSpeed] = useState<number | string>(0)
+    const [distance, setDistance] = useState<number | string>("")
+    const [speed, setSpeed] = useState<number | string>("")
     const [eta, setEta] = useState<number>(0)
 
 
     const handleDistanceChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setDistance(event.target.valueAsNumber);
+        if (Number.isFinite(event.target.valueAsNumber)){
+            setDistance(event.target.valueAsNumber);
+        } else if (event.target.value === ""){
+            setDistance(event.target.value)
+        }
+        
     }
 
     const handleSpeedChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setSpeed(event.target.valueAsNumber);
+        if (Number.isFinite(event.target.valueAsNumber)){
+            setSpeed(event.target.valueAsNumber);
+        } else if (event.target.value === ""){
+            setSpeed(event.target.value)
+        }    
     }
 
-    const calcEta = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const calcEta: React.FormEventHandler<HTMLFormElement> = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        let eta = distance * speed
+        let eta = Number(distance) / (speed as number)
         console.log(eta)
         setEta(eta)
     }
